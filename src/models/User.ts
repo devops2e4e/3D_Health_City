@@ -84,7 +84,6 @@ const userSchema = new Schema<IUser>(
     }
 );
 
-// Index for faster email lookups
-userSchema.index({ email: 1 });
+// Timestamps are handled by the schema option below
 
 export const User = model<IUser>('User', userSchema);

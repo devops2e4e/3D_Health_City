@@ -7,10 +7,16 @@
     "dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "seed": "ts-node seed.ts",
     "test": "jest --coverage",
     "lint": "eslint src --ext .ts"
   },
-  "keywords": ["health", "3d", "intelligence", "spatial"],
+  "keywords": [
+    "health",
+    "3d",
+    "intelligence",
+    "spatial"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {

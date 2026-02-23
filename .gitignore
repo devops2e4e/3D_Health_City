@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .env
+!client/.env
 uploads/
 *.log
 .DS_Store

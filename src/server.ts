@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import config from './config';
 import { connectDatabase } from './config/database';
+import path from 'path';
 import routes from './routes';
 import { errorHandler, notFound } from './middlewares/errorHandler';
 
@@ -26,6 +27,18 @@ if (config.env === 'development') {
 
 // API routes
 app.use('/api', routes);
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+    const clientPath = path.join(__dirname, '../client/dist');
+    app.use(express.static(clientPath));
+
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(clientPath, 'index.html'));
+        }
+    });
+}
 
 // 404 handler
 app.use(notFound);

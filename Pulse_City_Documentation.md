@@ -6,6 +6,9 @@ PulseCity is a production-grade 3D health intelligence platform designed for urb
 ### Mission
 To empower city administrators and health officials with data-driven insights through a digital twin of the city's health infrastructure.
 
+### Repository
+- **GitHub**: [Pulse_City](https://github.com/devops2e4e/3D_Health_City)
+
 ---
 
 ## 2. System Architecture

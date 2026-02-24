@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { Facility } from './src/models/Facility';
 import { User } from './src/models/User';
+import { Alert } from './src/models/Alert';
 import bcrypt from 'bcrypt';
 
 dotenv.config();
@@ -103,6 +104,70 @@ const sampleFacilities = [
         currentLoad: 71,
         services: ['General Practice', 'Laboratory'],
     },
+    {
+        name: 'Ikorodu General Hospital',
+        type: 'Hospital',
+        location: { type: 'Point', coordinates: [3.5042, 6.6194] },
+        capacity: 450,
+        currentLoad: 432,
+        services: ['Emergency', 'Surgery', 'Maternity', 'Pediatrics'],
+    },
+    {
+        name: 'Epe Health Center',
+        type: 'Health Center',
+        location: { type: 'Point', coordinates: [3.9833, 6.5833] },
+        capacity: 120,
+        currentLoad: 118,
+        services: ['General Practice', 'Vaccination', 'Maternity'],
+    },
+    {
+        name: 'Badagry Medical Center',
+        type: 'Hospital',
+        location: { type: 'Point', coordinates: [2.8833, 6.4167] },
+        capacity: 250,
+        currentLoad: 185,
+        services: ['Emergency', 'Surgery', 'Radiology'],
+    },
+    {
+        name: 'Gbagada Specialist Hospital',
+        type: 'Hospital',
+        location: { type: 'Point', coordinates: [3.3889, 6.5583] },
+        capacity: 380,
+        currentLoad: 375,
+        services: ['Emergency', 'ICU', 'Surgery', 'Cardiology'],
+    },
+    {
+        name: 'Alimosho General Hospital',
+        type: 'Hospital',
+        location: { type: 'Point', coordinates: [3.2500, 6.6000] },
+        capacity: 400,
+        currentLoad: 395,
+        services: ['Emergency', 'Surgery', 'Maternity'],
+    },
+    {
+        name: 'Agege Health Center',
+        type: 'Health Center',
+        location: { type: 'Point', coordinates: [3.3167, 6.6167] },
+        capacity: 150,
+        currentLoad: 142,
+        services: ['General Practice', 'Vaccination'],
+    },
+    {
+        name: 'Ojo Medical Clinic',
+        type: 'Clinic',
+        location: { type: 'Point', coordinates: [3.1833, 6.4667] },
+        capacity: 80,
+        currentLoad: 75,
+        services: ['General Practice', 'Laboratory'],
+    },
+    {
+        name: 'Isolo General Hospital',
+        type: 'Hospital',
+        location: { type: 'Point', coordinates: [3.3167, 6.5333] },
+        capacity: 320,
+        currentLoad: 305,
+        services: ['Emergency', 'Surgery', 'Maternity'],
+    },
 ];
 
 async function seedDatabase() {
@@ -118,7 +183,8 @@ async function seedDatabase() {
         // Clear existing data
         await Facility.deleteMany({});
         await User.deleteMany({});
-        console.log('🗑️  Cleared existing data');
+        await Alert.deleteMany({});
+        console.log('🗑️  Cleared existing data (Facilities, Users, and Alerts)');
 
         // Create admin user
         const hashedPassword = await bcrypt.hash('Admin123', 12);
@@ -142,6 +208,30 @@ async function seedDatabase() {
         // Create facilities
         const facilities = await Facility.insertMany(sampleFacilities);
         console.log(`🏥 Created ${facilities.length} facilities`);
+
+        // Generate alerts based on seed data
+        for (const facility of facilities) {
+            const loadPercentage = (facility.currentLoad / facility.capacity) * 100;
+
+            if (loadPercentage >= 95) {
+                await Alert.create({
+                    facilityId: facility._id,
+                    type: 'critical',
+                    message: `${facility.name} is at CRITICAL capacity (${Math.round(loadPercentage)}%)`,
+                    severity: 'critical',
+                    metadata: { loadPercentage: Math.round(loadPercentage) }
+                });
+            } else if (loadPercentage >= 85) {
+                await Alert.create({
+                    facilityId: facility._id,
+                    type: 'overcapacity',
+                    message: `${facility.name} is at ${Math.round(loadPercentage)}% capacity`,
+                    severity: 'high',
+                    metadata: { loadPercentage: Math.round(loadPercentage) }
+                });
+            }
+        }
+        console.log('🔔 Generated initial system alerts');
 
         // Display statistics
         const stats = {

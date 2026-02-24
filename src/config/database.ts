@@ -3,7 +3,8 @@ import config from './index';
 
 export const connectDatabase = async (): Promise<void> => {
     try {
-        await mongoose.connect(config.mongoUri);
+        const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/pulsecity';
+        await mongoose.connect(uri, { dbName: 'pulsecity' });
         console.log('✅ MongoDB connected successfully');
 
         // Enable geospatial indexing

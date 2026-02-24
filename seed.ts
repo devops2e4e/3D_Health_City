@@ -108,8 +108,12 @@ const sampleFacilities = [
 async function seedDatabase() {
     try {
         // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pulsecity');
-        console.log('✅ Connected to MongoDB');
+        const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/pulsecity';
+        await mongoose.connect(uri);
+
+        // Obfuscate URI for logging
+        const obfuscatedUri = uri.replace(/\/\/.*?:.*?@/, '//****:****@');
+        console.log(`✅ Connected to MongoDB: ${obfuscatedUri}`);
 
         // Clear existing data
         await Facility.deleteMany({});

@@ -63,7 +63,7 @@ export function DashboardPage() {
             {/* --- HERO SECTION --- */}
             <section className="relative flex-1 w-full flex flex-col items-center justify-start overflow-hidden pt-4">
                 {/* 3D City Scene Container - Slightly Wider Width */}
-                <div className="relative w-full max-w-6xl h-[80vh] md:h-[85vh] rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-blue-500/10 bg-slate-900/40 mx-auto px-4 md:px-0">
+                <div className="relative w-full max-w-6xl h-[60vh] md:h-[85vh] rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-blue-500/10 bg-slate-900/40 mx-auto px-4 md:px-0">
 
                     <div className="absolute inset-0">
                         <CityScene

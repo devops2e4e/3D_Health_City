@@ -281,8 +281,9 @@ function GridFloor() {
 
 export function CityScene({ facilities, onFacilityClick, selectedFacilityId }: CitySceneProps) {
     return (
-        <div className="w-full h-full bg-slate-950">
+        <div className="w-full h-full bg-slate-950" style={{ touchAction: 'pan-y' }}>
             <Canvas
+                style={{ touchAction: 'pan-y' }}
                 shadows
                 dpr={[1, 2]}
                 gl={{
@@ -308,10 +309,10 @@ export function CityScene({ facilities, onFacilityClick, selectedFacilityId }: C
                         makeDefault
                     />
 
-                    <ambientLight intensity={0.1} />
+                    <ambientLight intensity={0.5} />
                     <directionalLight
                         position={[100, 100, 50]}
-                        intensity={1.5}
+                        intensity={2.5}
                         castShadow
                         shadow-mapSize={[2048, 2048]}
                     />
@@ -344,7 +345,7 @@ export function CityScene({ facilities, onFacilityClick, selectedFacilityId }: C
                             height={300}
                         />
                         <Noise opacity={0.02} />
-                        <Vignette eskil={false} offset={0.1} darkness={1.1} />
+                        <Vignette eskil={false} offset={0.1} darkness={0.6} />
                         <ChromaticAberration
                             offset={new THREE.Vector2(0.001, 0.001)}
                             radialModulation={false}
